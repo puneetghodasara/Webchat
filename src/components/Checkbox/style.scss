@@ -1,0 +1,108 @@
+$backgroundcolor: lightgrey;
+$backgroundcolor--high: darken($backgroundcolor, 20%);
+$textcolor: #000;
+$textcolor--low: lighten($textcolor, 50%);
+$checkboxcolor: #FFAB00;
+$checkboxsize: 20px;
+$switchsize: $checkboxsize;
+$checkboxbordersize: 3px;
+$checkboxbordercolor: $checkboxcolor;
+$checkboxbordercolor--disabled: $backgroundcolor--high;
+$checkboxcheckmarksize: $checkboxsize - (2*$checkboxbordersize);
+$checkboxcheckmarksize--indeterminate: 2px;
+$checkboxcheckmarkcolor: $checkboxcolor;
+$checkboxcheckmarkcolor--disabled: $backgroundcolor--high;
+$checkboxlabelcolor: $textcolor;
+$checkboxlabelcolor--disabled: $textcolor--low;
+
+.ZCaiCheckbox {
+  display: flex;
+  align-items: center;
+  padding: .5rem;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  width: 270px;
+
+  &--container {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid lightgrey;
+
+    width: 100%;
+    padding: 0.2rem;
+  }
+
+  &--title {
+    font-weight: bold !important;
+  }
+
+  &--subtitle {
+    font-size: 14px;
+    font-weight: lighter;
+    flex-grow: 1;
+    padding-top: 0.2rem;
+  }
+
+  &__label {
+    padding: .5rem 1rem;
+    color: $checkboxlabelcolor;
+    cursor: pointer;
+  }
+
+  &__input {
+    position: relative;
+    margin: 0.3rem;
+    flex-shrink: 0;
+    width: $checkboxsize;
+    height: $checkboxsize;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none; // TODO: manage :focus
+    background: $backgroundcolor;
+    cursor: pointer;
+    border: $checkboxbordersize solid $checkboxbordercolor;
+
+    &::before {
+      content: ' ';
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      bottom: 50%;
+      left: 50%;
+      transition: all .1s;
+      background: $checkboxcheckmarkcolor;
+    }
+
+    &:checked,
+    &:indeterminate {
+      &::before {
+        top: $checkboxbordersize;
+        right: $checkboxbordersize;
+        bottom: $checkboxbordersize;
+        left: $checkboxbordersize;
+      }
+    }
+
+    &:indeterminate {
+      &::before {
+        top: ($checkboxcheckmarksize / 2) - ($checkboxcheckmarksize--indeterminate / 2);
+        bottom: ($checkboxcheckmarksize / 2) - ($checkboxcheckmarksize--indeterminate / 2);
+      }
+    }
+
+    &:disabled {
+      border-color: $checkboxbordercolor--disabled;
+      cursor: default;
+
+      &::before {
+        background-color: $checkboxcheckmarkcolor--disabled;
+      }
+
+      + .ZCaiCheckbox__label {
+        color: $checkboxlabelcolor--disabled;
+        cursor: default;
+      }
+    }
+  }
+}

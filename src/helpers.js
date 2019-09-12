@@ -31,3 +31,10 @@ export const getCredentialsFromCookie = (channelId) => {
 
   return null
 }
+
+let lastid = 0
+
+export const getId = (prefix) => {
+  lastid++;
+  return `${prefix}${lastid}`;
+}

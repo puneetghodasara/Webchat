@@ -21,9 +21,21 @@ export default store => next => action => {
     url: `${url}${query ? '?' : ''}${qs.stringify(query || {})}`,
   }
 
-  return axios(options)
+  const csrfOpt = {
+    headers: {
+      'x-csrf-token': 'Fetch',
+    },
+    method: "GET",
+    url: `${url}`,
+  }
+
+  return axios(csrfOpt)
+    .then((res) => {
+      console.log(res.headers["x-csrf-token"])
+      options.headers["x-csrf-token"] = res.headers["x-csrf-token"];
+      return axios(options)
+    })
     .then(res => {
-      console.log()
       dispatch({ type: `${prefix}_SUCCESS`, payload: { ...res.data.results } })
       return res.data.results
     })

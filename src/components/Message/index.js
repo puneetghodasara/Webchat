@@ -38,7 +38,7 @@ class Message extends Component {
       botMessageBackgroundColor,
     } = preferences
     const { displayIcon } = message
-    const { type, content, error, title, markdown } = message.attachment
+    const { type, content, error, title, markdown, customType } = message.attachment
     const isBot = message.participant.isBot
 
     const image = isBot ? botPicture : userPicture
@@ -82,11 +82,11 @@ class Message extends Component {
             <Carousel {...messageProps} sendMessage={sendMessage} />
           )}
 
-          {type === 'list' && <List {...messageProps} sendMessage={sendMessage} />}
+          {type === 'list' && !customType && <List {...messageProps} sendMessage={sendMessage} />}
 
           {type === 'buttons' && <Buttons {...messageProps} sendMessage={sendMessage} />}
 
-          {type === 'checkboxes' && <Checkboxes {...messageProps} checkedColor={accentColor} sendMessage={sendMessage} />}
+          {type === 'list' && customType === 'checkboxes' && <Checkboxes {...messageProps} checkedColor={accentColor} sendMessage={sendMessage} />}
 
           {type === 'quickReplies' && (
             <QuickReplies
